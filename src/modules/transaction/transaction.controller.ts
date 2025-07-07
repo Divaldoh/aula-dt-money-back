@@ -23,20 +23,22 @@ export class TransactionController {
     @Body() createTransactionDto: CreateTransactionDto,
     @Res() res: Response,
   ) {
-    const createdTransaction = await this.transactionService.create(createTransactionDto);
-    return res.status(HttpStatus.CREATED).json(createdTransaction);
+    const createdTransaction =
+      await this.transactionService.create(createTransactionDto);
+    res.status(HttpStatus.CREATED).send(createdTransaction);
+    return;
   }
 
   @Get()
   async findAll(@Res() res: Response) {
     const transactions = await this.transactionService.findAll();
-    return res.status(HttpStatus.OK).json(transactions);
+    return res.status(HttpStatus.OK).send(transactions);
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string, @Res() res: Response) {
-    const transaction = await this.transactionService.findOne(id);
-    return res.status(HttpStatus.OK).json(transaction);
+    const foundTransaction = await this.transactionService.findOne(id);
+    return res.status(HttpStatus.OK).send(foundTransaction);
   }
 
   @Patch(':id')
@@ -45,8 +47,11 @@ export class TransactionController {
     @Body() updateTransactionDto: UpdateTransactionDto,
     @Res() res: Response,
   ) {
-    const updatedTransaction = await this.transactionService.update(id, updateTransactionDto);
-    return res.status(HttpStatus.OK).json(updatedTransaction);
+    const updatedTransaction = await this.transactionService.update(
+      id,
+      updateTransactionDto,
+    );
+    return res.status(HttpStatus.OK).send(updatedTransaction);
   }
 
   @Delete(':id')
